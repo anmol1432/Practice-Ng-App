@@ -2,13 +2,14 @@ import { Inject, Injectable } from '@angular/core';
 import { RouteConfig } from './routeConfig';
 import { RouteConfigToken } from './routeConfig.service';
 
-@Injectable({
+@Injectable( {
   providedIn: 'any'
-})
+} )
 export class ConfigService {
 
   constructor(@Inject(RouteConfigToken) private configToken: RouteConfig) { 
-    console.log('ConfigService intialized');
-    console.log(this.configToken);
+    // console.log('ConfigService intialized');
+    // console.log( this.configToken.title );
+    window.document.title = this.configToken.title
   }
 }

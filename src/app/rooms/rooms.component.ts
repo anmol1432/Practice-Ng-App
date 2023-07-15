@@ -10,14 +10,14 @@ import {
   QueryList,
   OnDestroy,
   SkipSelf,
+  Inject,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { catchError, map, Observable, of, Subject, Subscription } from 'rxjs';
-import { HeaderComponent } from '../header/header.component';
-import { ConfigService } from '../services/config.service';
-import { ShareddataService } from '../services/shareddata.service';
 import { Room, RoomList } from './rooms';
 import { RoomsService } from './services/rooms.service';
+import { ConfigService } from '../services/config.service';
+import { RouteConfigToken } from '../services/routeConfig.service';
 
 @Component({
   selector: 'hinv-rooms',
@@ -53,11 +53,6 @@ export class RoomsComponent
     // observer.error('error');
   });
 
-  @ViewChild(HeaderComponent) headerComponent!: HeaderComponent;
-
-  @ViewChildren(HeaderComponent)
-  headerChildrenComponent!: QueryList<HeaderComponent>;
-
   // roomService = new RoomsService();
 
   error: string = '';
@@ -78,27 +73,27 @@ export class RoomsComponent
     })
   );
 
-  priceFilter = new FormControl(0)
+  priceFilter = 0;
 
   roomsCount$ = this.roomsService.getRooms$.pipe(map((rooms) => rooms.length));
 
-  message$ = this.sharedDataService.message$;
 
   constructor(
     @SkipSelf() private roomsService: RoomsService,
-    private configService: ConfigService,
-    private sharedDataService: ShareddataService
-  ) {}
+   private configService : ConfigService 
+  ) {
+  // console.log("configService",configService);
+  }
 
   ngOnInit(): void {
     this.roomsService.getPhotos().subscribe((event) => {
       switch (event.type) {
         case HttpEventType.Sent: {
-          console.log('Request has been made!');
+          // console.log('Request has been made!');
           break;
         }
         case HttpEventType.ResponseHeader: {
-          console.log('Request success!');
+          // console.log('Request success!');
           break;
         }
         case HttpEventType.DownloadProgress: {
@@ -106,24 +101,24 @@ export class RoomsComponent
           break;
         }
         case HttpEventType.Response: {
-          console.log(event.body);
+          // console.log(event.body);
         }
       }
     });
 
     this.stream.subscribe({
-      next: (value) => console.log(value),
-      complete: () => console.log('complete'),
-      error: (err) => console.log(err),
+      next: (value) => value,
+      complete: () =>  null,
+      error: (err) => err,
     });
     this.stream.subscribe((data) => console.log(data));
-    //  this.roomsService.getRooms$.subscribe((rooms) => {
-    //     this.roomList = rooms;
-    //   });
+    this.roomsService.getRooms$.subscribe( ( rooms ) => {
+        this.roomList = rooms;
+      });
   }
 
   ngDoCheck() {
-    console.log('on changes is called');
+    // console.log('on changes is called');
   }
 
   ngAfterViewInit() {
@@ -176,7 +171,8 @@ export class RoomsComponent
       rating: 4.5,
     };
 
-    this.roomsService.editRoom(room).subscribe((data) => {
+    this.roomsService.editRoom( room ).subscribe( ( data ) => {
+      // console.log(data)
       this.roomList = data;
     });
   }

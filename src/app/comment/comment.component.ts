@@ -1,29 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, pluck } from 'rxjs';
-import { Comments } from './comment';
 import { CommentService } from './comment.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, pluck } from 'rxjs';
 
-@Component({
+@Component( {
   selector: 'hinv-comment',
   templateUrl: './comment.component.html',
-  styleUrls: ['./comment.component.scss'],
-})
+  styleUrls: [ './comment.component.scss' ]
+} )
 export class CommentComponent implements OnInit {
-  comments$ = this.commentService.getComments();
 
-  comment$ = this.activatedRoute.data.pipe(pluck('comments'));
+  constructor ( private service: CommentService,
+    private activatedRoute: ActivatedRoute ) { }
 
-  comments : Comments[] = []
+  comments?: Observable<any>;
 
-  constructor(
-    private commentService: CommentService,
-    private activatedRoute: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data) => {
-       this.comments = data['comments'];
-    });
+  ngOnInit() {
+    this.comments = this.activatedRoute.data.pipe( pluck( 'comments' ) );
   }
+
 }

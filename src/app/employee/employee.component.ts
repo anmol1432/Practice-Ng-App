@@ -1,6 +1,6 @@
 import { Component, OnInit, Self } from '@angular/core';
 import { RoomsService } from '../rooms/services/rooms.service';
-import { ShareddataService } from '../services/shareddata.service';
+// import { ShareddataService } from '../services/shareddata.service';
 
 @Component({
   selector: 'hinv-employee',
@@ -11,11 +11,11 @@ import { ShareddataService } from '../services/shareddata.service';
 export class EmployeeComponent implements OnInit {
   empName: string = 'John';
 
-  constructor(private sharedDataSerice: ShareddataService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   sendMessage(){
-    this.sharedDataSerice.setMessage('Hello from Employee');
+    // this.sharedDataSerice.setMessage('Hello from Employee');
   }
 }

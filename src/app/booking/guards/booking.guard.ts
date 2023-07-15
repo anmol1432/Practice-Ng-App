@@ -4,11 +4,11 @@ import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } f
 import { Observable } from 'rxjs';
 import { BookingComponent } from '../booking.component';
 
-@Injectable({
+@Injectable( {
   providedIn: 'root',
-})
+} )
 export class BookingGuard implements CanDeactivate<BookingComponent> {
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor ( private _snackBar: MatSnackBar ) { }
 
   canDeactivate(
     component: BookingComponent,
@@ -20,12 +20,15 @@ export class BookingGuard implements CanDeactivate<BookingComponent> {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-      if (component.bookingForm.pristine) 
-      {
-        return component.bookingForm.pristine
-      } else {
-        this._snackBar.open('You have unsaved changes!', 'DISCARD');
-        return false;
-      }
+    if ( component.boookingForm.pristine ) {
+      console.log( "true" );
+      return component.boookingForm.pristine;
+    } else {
+      console.log( "false" );
+      this._snackBar.open( 'You have unsaved changes!', 'DISCARD' );
+      return false;
+    }
+    // return !component.boookingForm.dirty;
   }
+
 }

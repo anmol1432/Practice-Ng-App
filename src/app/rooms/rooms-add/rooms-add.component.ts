@@ -1,42 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { RoomList } from '../rooms';
 import { RoomsService } from '../services/rooms.service';
+import { NgForm } from '@angular/forms';
 
-@Component({
-  selector: 'hinv-rooms-add',
+@Component( {
+  selector: 'hinv-rooms-add', 
   templateUrl: './rooms-add.component.html',
-  styleUrls: ['./rooms-add.component.scss'],
-})
+  styleUrls: [ './rooms-add.component.scss' ]
+} )
 export class RoomsAddComponent implements OnInit {
-  room: RoomList = {
+
+  rooms: RoomList = {
     roomType: '',
     amenities: '',
+    price: 0,
+    photos: '',
     checkinTime: new Date(),
     checkoutTime: new Date(),
-    photos: '',
-    price: 0,
-    rating: 0,
+    rating: 4,
   };
+  show = false;
+  constructor ( private roomsService: RoomsService ) { }
 
-  sucessMessage: string = '';
-
-  constructor(private roomsService: RoomsService) {}
-
-  ngOnInit(): void {}
-
-  AddRoom(roomsForm: NgForm) {
-    this.roomsService.addRoom(this.room).subscribe((data) => {
-      this.sucessMessage = 'Room Added Successfully';
-      roomsForm.resetForm({
-        roomType: '',
-        amenities: '',
-        checkinTime: new Date(),
-        checkoutTime: new Date(),
-        photos: '',
-        price: 0,
-        rating: 0,
-      });
-    });
+  ngOnInit(): void {
+  }
+  handleSubmit( event: any,roomsForm:NgForm ) {
+    this.roomsService.addRoom( this.rooms ).subscribe( ( res ) => {
+      // console.log( "res =>", res )
+      this.show = !this.show;
+      roomsForm.resetForm()
+      setTimeout( () => this.show = false, 4000 )
+    } )
+    
+    // console.log( "event", event.target['Amenities'].value  );
   }
 }

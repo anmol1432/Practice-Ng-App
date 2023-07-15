@@ -4,11 +4,11 @@ import { BookingComponent } from './booking.component';
 import { BookingGuard } from './guards/booking.guard';
 
 const routes: Routes = [
-  { path: '', component: BookingComponent, canDeactivate: [BookingGuard] },
+  { path: '', component: BookingComponent, canDeactivate: [ BookingGuard ] }
 ];
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
+@NgModule( {
+  imports: [ RouterModule.forChild( routes ) ],
+  exports: [ RouterModule ]
+} )
 export class BookingRoutingModule { }

@@ -1,33 +1,47 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeComponent } from './employee/employee.component';
-import { LoginGuard } from './guards/login.guard';
+import { NotfoundComponent } from './navigation/notfound/notfound.component';
 import { LoginComponent } from './login/login.component';
-import { NotfoundComponent } from './notfound/notfound.component';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
-  { path: 'employee', component: EmployeeComponent, canActivate: [LoginGuard] },
-  { path: 'login', component: LoginComponent },
   {
     path: 'rooms',
+    // canActivate: [ LoginGuard ],
+    // canLoad: [ LoginGuard ],
     loadChildren: () =>
-      import('./rooms/rooms.module').then((m) => m.RoomsModule),
-    canActivate: [LoginGuard],
-    canLoad: [LoginGuard], 
+      import( './rooms/rooms.module' ).then( ( m ) => m.RoomsModule )
+  },
+  {
+    path: 'booking/:roomId',
+    // canActivate: [ LoginGuard ],
+    // canLoad: [ LoginGuard ],
+    loadChildren: () => import( './booking/booking.module' ).then( m => m.BookingModule )
+  },
+  {
+    path: 'comments',
+    // canActivate: [ LoginGuard ],
+    // canLoad: [ LoginGuard ],
+    loadChildren: () => import( './comment/comment.module' ).then( m => m.CommentModule )
+  },
+  {
+    path: 'employes',
+    canActivate: [ LoginGuard ],
+    component: EmployeeComponent
+  },
+  { path: 'login', component: LoginComponent },
+  {
+    path: '404',
+    component: NotfoundComponent
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {
-    path: 'booking/:roomid',
-    loadChildren: () =>
-      import('./booking/booking.module').then((m) => m.BookingModule),
-    // canActivate: [LoginGuard],
-  },
-  { path: 'comment', loadChildren: () => import('./comment/comment.module').then(m => m.CommentModule) },
-  { path: '**', component: NotfoundComponent },
+  { path: '**', redirectTo: '/404' },
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
+@NgModule( {
+  imports: [ RouterModule.forRoot( routes ) ],
+  exports: [ RouterModule ],
+
+} )
+export class AppRoutingModule { }
